@@ -1,3 +1,6 @@
+//Home, Time, Mail, Calendar, Attend, Question などのクラスを作成し、それぞれの機能を別クラスに分けます。
+//
+//
 import java.awt.*;
 import java.awt.event.*;
 
