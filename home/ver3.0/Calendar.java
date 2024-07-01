@@ -1,12 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.JOptionPane;
 
 public class Calendar extends AppFunction {
     private Panel calendarPanel;
     private Label monthLabel;
     private int month, year;
-    private Map<String, java.util.List<String>> appointments; // 予定を保存するためのマップ
+    private Map<String, java.util.List<String>> appointments;
 
     public Calendar() {
         appointments = new HashMap<>();
@@ -23,28 +24,22 @@ public class Calendar extends AppFunction {
         Button prevButton = new Button("<");
         Button nextButton = new Button(">");
 
-        prevButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                month--;
-                if (month < 0) {
-                    month = 11;
-                    year--;
-                }
-                updateCalendar();
+        prevButton.addActionListener(e -> {
+            month--;
+            if (month < 0) {
+                month = 11;
+                year--;
             }
+            updateCalendar();
         });
 
-        nextButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                month++;
-                if (month > 11) {
-                    month = 0;
-                    year++;
-                }
-                updateCalendar();
+        nextButton.addActionListener(e -> {
+            month++;
+            if (month > 11) {
+                month = 0;
+                year++;
             }
+            updateCalendar();
         });
 
         headerPanel.add(prevButton, BorderLayout.WEST);
@@ -82,12 +77,9 @@ public class Calendar extends AppFunction {
         for (int day = 1; day <= daysInMonth; day++) {
             final int currentDay = day;
             Button dayButton = new Button(String.valueOf(currentDay));
-            dayButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String date = year + "-" + (month + 1) + "-" + currentDay;
-                    showAppointmentsDialog(date);
-                }
+            dayButton.addActionListener(e -> {
+                String date = year + "-" + (month + 1) + "-" + currentDay;
+                showAppointmentsDialog(date);
             });
             calendarPanel.add(dayButton);
         }
@@ -114,6 +106,8 @@ public class Calendar extends AppFunction {
             String[] lines = textArea.getText().split("\n");
             java.util.List<String> newAppointments = Arrays.asList(lines);
             appointments.put(date, newAppointments);
+        } else if (result == JOptionPane.CANCEL_OPTION) {
+            appointments.remove(date);
         }
     }
 }
